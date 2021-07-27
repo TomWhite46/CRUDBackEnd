@@ -1,4 +1,4 @@
-insert into `dinosaur` 
+insert into `word` 
 	(`icelandic`, `english`, `pos`, `score`) 
 values 
 	('kona', 'woman', 'noun', 0),

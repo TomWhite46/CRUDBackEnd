@@ -1,16 +1,29 @@
 package vocab.com.bae.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import vocab.com.bae.data.Word;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 
@@ -32,12 +45,48 @@ public class VocabControllerIntegrationTest {
 //	test for create new word
 	@Test
 	void testCreate() throws Exception {
+		// define word to test-create
+		Word testWord = new Word("svartur", "black", "adjective", 0);
+
+		// convert to JSON
+		String testWordAsJSON = this.mapper.writeValueAsString(testWord);
+
+		// build request using JSON string
+		RequestBuilder request = post("/create").contentType(MediaType.APPLICATION_JSON).content(testWordAsJSON);
+
+		// *** build response checkers**
+
+		// for status code
+		ResultMatcher checkStatus = status().isCreated();
+
+		// for returned JSON
+		Word testCreatedWord = new Word(4, "svartur", "black", "adjective", 0); // create test word
+		String testCreatedWordAsJSON = this.mapper.writeValueAsString(testCreatedWord); // convert to JSON
+		ResultMatcher checkBody = content().json(testCreatedWordAsJSON);
+
+		// run test
+		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
 
 	}
 
 //	test for getall
 	@Test
 	void testGetall() throws Exception {
+		// request builder
+		RequestBuilder request = get("/getAll");
+
+		// *** response ***
+		// status code
+		ResultMatcher checkStatus = status().isOk();
+
+		// for return
+		List<Word> testCreatedWords = new ArrayList<>(List.of(new Word(1, "kona", "woman", "noun", 0),
+				new Word(2, "barn", "child", "noun", 1), new Word(3, "koma", "to come", "verb", 3)));
+		String testCreatedWordsAsJSON = this.mapper.writeValueAsString(testCreatedWords);
+		ResultMatcher checkBody = content().json(testCreatedWordsAsJSON);
+
+		// run test
+		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
 
 	}
 
