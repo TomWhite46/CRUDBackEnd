@@ -1,5 +1,6 @@
 package vocab.com.bae.rest;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -59,7 +60,7 @@ public class VocabControllerIntegrationTest {
 		// for status code
 		ResultMatcher checkStatus = status().isCreated();
 
-		// for returned JSON
+		// body
 		Word testCreatedWord = new Word(4, "svartur", "black", "adjective", 0); // create test word
 		String testCreatedWordAsJSON = this.mapper.writeValueAsString(testCreatedWord); // convert to JSON
 		ResultMatcher checkBody = content().json(testCreatedWordAsJSON);
@@ -79,7 +80,7 @@ public class VocabControllerIntegrationTest {
 		// status code
 		ResultMatcher checkStatus = status().isOk();
 
-		// for return
+		// body
 		List<Word> testCreatedWords = new ArrayList<>(List.of(new Word(1, "kona", "woman", "noun", 0),
 				new Word(2, "barn", "child", "noun", 1), new Word(3, "koma", "to come", "verb", 3)));
 		String testCreatedWordsAsJSON = this.mapper.writeValueAsString(testCreatedWords);
@@ -89,5 +90,27 @@ public class VocabControllerIntegrationTest {
 		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
 
 	}
+
+//	test for delete by id
+	@Test
+	void testDeleteById() throws Exception {
+		// request builder
+		int testId = 2;
+		RequestBuilder request = delete("/delete/" + testId);
+
+		// *** response ***
+		// status code
+		ResultMatcher checkStatus = status().isAccepted();
+
+		// body
+		ResultMatcher checkBody = content().string("ID " + testId + " deleted.");
+		;
+
+		// run test
+		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
+
+	}
+
+//	test for put by id
 
 }
