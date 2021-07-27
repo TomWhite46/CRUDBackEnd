@@ -13,7 +13,7 @@ public class VocabServiceDB implements VocabService {
 
 	private VocabRepo repo;
 
-	// constructor
+//	constructor
 	public VocabServiceDB(VocabRepo repo) {
 		super();
 		this.repo = repo;
