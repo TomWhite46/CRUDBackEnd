@@ -1,5 +1,7 @@
 package vocab.com.bae.data;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,6 +36,30 @@ public class Word {
 	}
 
 	public Word() {
+	}
+
+	@Override
+	public String toString() {
+		return "ID: " + id + ", Word: " + icelandic + ", English: " + english + ", Part of speech: " + pos + ", Score: "
+				+ score;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(english, icelandic, id, pos, score);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Word other = (Word) obj;
+		return Objects.equals(english, other.english) && Objects.equals(icelandic, other.icelandic) && id == other.id
+				&& Objects.equals(pos, other.pos) && score == other.score;
 	}
 
 //	*************** Getters and Setters **************

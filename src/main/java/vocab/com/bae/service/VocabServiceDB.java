@@ -40,14 +40,15 @@ public class VocabServiceDB implements VocabService {
 
 //	replace by id with new word
 	@Override
-	public Word replaceWord(int id, Word word) {
-		Word foundWord = this.repo.findById(id).get();
-		foundWord.setIcelandic(word.getIcelandic());
-		foundWord.setEnglish(word.getEnglish());
-		foundWord.setPos(word.getPos());
-		foundWord.setScore(word.getScore());
-		this.repo.save(foundWord);
-		return foundWord;
+	public Word replaceWord(int id, Word newWord) {
+		Word found = this.repo.findById(id).get();
+
+		found.setIcelandic(newWord.getIcelandic());
+		found.setEnglish(newWord.getEnglish());
+		found.setPos(newWord.getPos());
+		found.setScore(newWord.getScore());
+		Word updated = this.repo.save(found);
+		return found;
 	}
 
 }
