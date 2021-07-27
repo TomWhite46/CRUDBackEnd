@@ -3,6 +3,7 @@ package vocab.com.bae.rest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -112,5 +113,25 @@ public class VocabControllerIntegrationTest {
 	}
 
 //	test for put by id
+	@Test
+	void testPutById() throws Exception {
+		// request builder
+		int testId = 2;
+		Word testWord = new Word("svartur", "black", "adjective", 5);
+		String testWordAsJSON = this.mapper.writeValueAsString(testWord);
+		RequestBuilder request = put("/update/" + testId).contentType(MediaType.APPLICATION_JSON)
+				.content(testWordAsJSON);
 
+		// *** response ***
+		// status code
+		ResultMatcher checkStatus = status().isOk();
+
+		// body
+		Word testReplacedWord = new Word(2, "svartur", "black", "adjective", 5);
+		String testReplacedWordAsJSON = this.mapper.writeValueAsString(testReplacedWord);
+		ResultMatcher checkBody = content().json(testReplacedWordAsJSON);
+
+		// run test
+		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
+	}
 }

@@ -46,8 +46,9 @@ public class VocabServiceDB implements VocabService {
 		foundWord.setIcelandic(word.getIcelandic());
 		foundWord.setEnglish(word.getEnglish());
 		foundWord.setPos(word.getPos());
+		foundWord.setScore(word.getScore());
 		this.repo.save(foundWord);
-		return word;
+		return foundWord;
 	}
 
 }
