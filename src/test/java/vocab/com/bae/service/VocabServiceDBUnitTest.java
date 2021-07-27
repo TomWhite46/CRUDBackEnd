@@ -62,4 +62,13 @@ public class VocabServiceDBUnitTest {
 
 	}
 
+	@Test
+	void testDelete() {
+		int id = 2;
+		String testString = "ID 2 deleted.";
+		String actual = this.service.deleteWord(id);
+		assertThat(actual).isEqualTo(testString);
+
+	}
+
 }
