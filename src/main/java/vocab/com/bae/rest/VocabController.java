@@ -27,7 +27,7 @@ public class VocabController {
 	}
 
 //	GetAll
-	@GetMapping("/getAll)")
+	@GetMapping("/getAll")
 	public ResponseEntity<List<Word>> getAll() {
 		List<Word> allWords = this.service.getAll();
 		return new ResponseEntity<>(allWords, HttpStatus.OK);
