@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 
 @Sql(scripts = { "classpath:vocab-schema.sql",
-		"classpath:vocab-schema.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+		"classpath:vocab-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 
 @AutoConfigureMockMvc
 
