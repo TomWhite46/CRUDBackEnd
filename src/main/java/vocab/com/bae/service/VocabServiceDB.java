@@ -28,8 +28,7 @@ public class VocabServiceDB implements VocabService {
 //	create new
 	@Override
 	public Word createWord(Word word) {
-		this.repo.save(word);
-		return word;
+		return this.repo.save(word);
 	}
 
 //	delete by id

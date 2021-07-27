@@ -43,4 +43,23 @@ public class VocabServiceDBUnitTest {
 		// check no of runs
 		Mockito.verify(this.repo, Mockito.times(1)).findAll();
 	}
+
+	@Test
+	void testCreate() {
+		int id = 1;
+		Word newWord = new Word("land", "country", "noun", 2);
+		Word testWord = new Word(1, "land", "country", "noun", 2);
+//		on test save, return testWord
+		Mockito.when(this.repo.save(newWord)).thenReturn(testWord);
+
+//		input test arguments
+		Word actual = this.service.createWord(newWord);
+
+//		check that this has returned the same as testDinosaur
+		assertThat(actual).isEqualTo(testWord);
+
+		Mockito.verify(this.repo, Mockito.times(1)).save(newWord);
+
+	}
+
 }
