@@ -100,4 +100,46 @@ public class VocabServiceDBUnitTest {
 
 	}
 
+	@Test
+	void testGetRandom() {
+		Word randomWord = new Word(1, "land", "country", "noun", 2);
+
+		List<Word> testList = new ArrayList<>(List.of(new Word(1, "land", "country", "noun", 2)));
+
+		// on getLowestScores, return testList
+		Mockito.when(this.repo.getLowestScores()).thenReturn(testList);
+
+		// cannot mock Math.random (apparently) so test list only has item - so this is
+		// the only possible one
+
+		Word actual = this.service.getRandom();
+
+		assertThat(actual).isEqualTo(randomWord);
+
+		Mockito.verify(this.repo, Mockito.times(1)).getLowestScores();
+
+	}
+
+	@Test
+	void testaddScore() {
+		int id = 1;
+		Word inputWord = new Word(id, "land", "country", "noun", 2);
+		Word outputWord = new Word(id, "land", "country", "noun", 3);
+
+		// on findById, produce inputWord
+		Mockito.when(this.repo.findById(id)).thenReturn(Optional.of(inputWord));
+
+		// on save, return final item
+		Mockito.when(this.repo.save(outputWord)).thenReturn(outputWord);
+
+		// create actual result
+		Word actual = this.service.addScore(id);
+
+		// run test
+		assertThat(actual).isEqualTo(outputWord);
+
+		Mockito.verify(this.repo, Mockito.times(1)).findById(id);
+		Mockito.verify(this.repo, Mockito.times(1)).save(outputWord);
+	}
+
 }
