@@ -51,4 +51,21 @@ public class VocabServiceDB implements VocabService {
 		return found;
 	}
 
+//	get random
+	@Override
+	public Word getRandom() {
+		List<Word> lowestList = this.repo.getLowestScores();
+		int i = (int) (Math.random() * lowestList.size());
+		Word randomWord = lowestList.get(i);
+		return randomWord;
+	}
+
+//	increment score
+	@Override
+	public Word addScore(int id) {
+		Word found = this.repo.findById(id).get();
+		found.setScore(found.getScore() + 1);
+		return this.repo.save(found);
+	}
+
 }

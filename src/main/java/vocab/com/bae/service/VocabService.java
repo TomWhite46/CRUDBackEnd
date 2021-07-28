@@ -18,4 +18,10 @@ public interface VocabService {
 //	Update
 	public Word replaceWord(int id, Word word);
 
+//	GetRandom
+	public Word getRandom();
+
+//	increment score
+	public Word addScore(int id);
+
 }
