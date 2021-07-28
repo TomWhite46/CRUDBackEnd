@@ -2,6 +2,7 @@ package vocab.com.bae.rest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -130,6 +131,44 @@ public class VocabControllerIntegrationTest {
 		Word testReplacedWord = new Word(2, "svartur", "black", "adjective", 5);
 		String testReplacedWordAsJSON = this.mapper.writeValueAsString(testReplacedWord);
 		ResultMatcher checkBody = content().json(testReplacedWordAsJSON);
+
+		// run test
+		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
+	}
+
+//	test get random lowest-scoring word
+	@Test
+	void testGetRandom() throws Exception {
+		// build request
+		RequestBuilder request = get("/getRandom");
+
+		// *** response ***
+		// status code
+		ResultMatcher checkStatus = status().isOk();
+
+		// body - because SQL data has kona as lowest scoring, this should be returned
+		Word randomWord = new Word(1, "kona", "woman", "noun", 0);
+		String randomWordAsJSON = this.mapper.writeValueAsString(randomWord);
+		ResultMatcher checkBody = content().json(randomWordAsJSON);
+
+		// run test
+		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
+	}
+
+//	test increment score
+	@Test
+	void testAddScore() throws Exception {
+		// build request
+		RequestBuilder request = patch("/addScore/2");
+
+		// *** response ***
+		// status code
+		ResultMatcher checkStatus = status().isAccepted();
+
+		// body
+		Word testWord = new Word(2, "barn", "child", "noun", 2); // ie score 1 higher than in SQL
+		String testWordAsJSON = this.mapper.writeValueAsString(testWord);
+		ResultMatcher checkBody = content().json(testWordAsJSON);
 
 		// run test
 		this.mockMVC.perform(request).andExpect(checkStatus).andExpect(checkBody);
